@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Trojan Tech Ticket System</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+	</head>
+	<body>
+		<nav class="navbar navbar-light bg-faded">
+			<a class="navbar-brand" href="/">Trojan Tech Tickets</a>
+			<ul class="nav navbar-nav pull-right">
+				<li class="nav-item">
+					<a class="nav-link" href="{{.LogoutURL}}">Logout</a>
+				</li>
+			</ul>
+		</nav>
+		<main class="container-fluid">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Worker</th>
+						<th>Customer</th>
+						<th>Outcome</th>
+						<th>Description</th>
+						<th>Date</th>
+						<th>Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{range .Tickets}}
+					<tr data-steps="{{.Steps | json}}">
+						<td>{{.Worker}}</td>
+						<td>{{.Customer}}</td>
+						<td>{{if .EscalatedTo}}Escalated to {{.EscalatedTo}}{{else}}Resolved{{end}}</td>
+						<td>{{.Description | truncate 80}}</td>
+						<td>{{.Time | timeFormat "2006-01-02"}}</td>
+						<td>{{.Time | timeFormat "3:04 PM"}}</td>
+					</tr>
+					{{end}}
+				</tbody>
+			</table>
+		</main>
+		<div class="modal fade" id="modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							&times;
+						</button>
+						<h4 class="modal-title">Ticket</h4>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group row">
+								<label for="worker" class="col-sm-2 form-control-label">Worker</label>
+								<div class="col-sm-10">
+									<input class="form-control" disabled id="worker"/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="time" class="col-sm-2 form-control-label">Time</label>
+								<div class="col-sm-5">
+									<input class="form-control" disabled id="date"/>
+								</div>
+								<div class="col-sm-5">
+									<input class="form-control" disabled id="time"/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="customer" class="col-sm-2 form-control-label">Customer</label>
+								<div class="col-sm-10">
+									<input class="form-control" disabled id="customer"/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="description" class="col-sm-2 form-control-label">Description</label>
+								<div class="col-sm-10">
+									<textarea class="form-control" disabled id="description"></textarea>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="steps" class="col-sm-2 form-control-label">Steps Taken</label>
+								<div class="col-sm-5" id="diagnostics"></div>
+								<div class="col-sm-5" id="actions"></div>
+							</div>
+							<div class="form-group row">
+								<label for="outcome" class="col-sm-2 form-control-label">Outcome</label>
+								<div class="col-sm-10">
+									<input class="form-control" disabled id="outcome"/>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+		<script>
+$(function() {
+	var modalFields = [
+		"worker",
+		"customer",
+		"outcome",
+		"description",
+		"date",
+		"time"
+	];
+	$("tbody>tr").click(function() {
+		var data = $(this).children().map(function(_, e) {
+			return e.textContent;
+		}).toArray();
+		data.forEach(function(value, i) {
+			var field = modalFields[i];
+			if(field === undefined) return;
+			$("#" + field).val(value);
+		});
+		var steps = JSON.parse(this.dataset.steps);
+		if(!steps) {
+			$("#diagnostics,#actions").append(
+				$("<span>").addClass("text-muted").text("None")
+			);
+		} else {
+			for(var i in steps) {
+				var step = steps[i];
+				$("#diagnostics").empty().append(
+					$("<input>").addClass("form-control").attr("disabled", true).val(step.Diagnostic)
+				);
+				$("#actions").empty().append(
+					$("<input>").addClass("form-control").attr("disabled", true).val(step.Action)
+				);
+			}
+		}
+		$("#modal").modal();
+	});
+});
+		</script>
+	</body>
+</html>
