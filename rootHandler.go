@@ -1,6 +1,7 @@
 package trojanTechTickets
 
 import (
+	"fmt"
 	"net/http"
 
 	"appengine"
@@ -9,8 +10,9 @@ import (
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	// 404 if not a request for the root
-	if r.URL.String() != "/" {
+	if r.URL.Path != "/" {
 		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "404 Not Found: %s", r.URL.String())
 		return
 	}
 	// Get the user
