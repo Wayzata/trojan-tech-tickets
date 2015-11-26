@@ -17,7 +17,7 @@
 			</ul>
 		</nav>
 		<main class="container-fluid">
-			<table class="table">
+			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th>Worker</th>
@@ -77,7 +77,7 @@
 							<div class="form-group row">
 								<label for="description" class="col-sm-2 form-control-label">Description</label>
 								<div class="col-sm-10">
-									<textarea class="form-control" disabled id="description"></textarea>
+									<textarea class="form-control" disabled id="description" rows="5"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -122,20 +122,14 @@ $(function() {
 		});
 		$("#description").val(this.dataset.description);
 		var steps = JSON.parse(this.dataset.steps);
-		if(!steps) {
-			$("#diagnostics,#actions").append(
-				$("<span>").addClass("text-muted").text("None")
+		for(var i in steps) {
+			var step = steps[i];
+			$("#diagnostics").empty().append(
+				$("<input>").addClass("form-control").attr("disabled", true).val(step.Diagnostic)
 			);
-		} else {
-			for(var i in steps) {
-				var step = steps[i];
-				$("#diagnostics").empty().append(
-					$("<input>").addClass("form-control").attr("disabled", true).val(step.Diagnostic)
-				);
-				$("#actions").empty().append(
-					$("<input>").addClass("form-control").attr("disabled", true).val(step.Action)
-				);
-			}
+			$("#actions").empty().append(
+				$("<input>").addClass("form-control").attr("disabled", true).val(step.Action)
+			);
 		}
 		$("#modal").modal();
 	});
