@@ -6,43 +6,57 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Trojan Tech Ticket System</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+		<style>
+main {
+	padding-top: 50px;
+}
+		</style>
 	</head>
-	<body class="container">
-		<h1>Hello, {{.User}}</h1>
-		<form action="/submit" method="post">
-			<fieldset class="form-group">
-				<label for="customer">Customer</label>
-				<input class="form-control" id="customer" name="customer"/>
-			</fieldset>
-			<fieldset class="form-group">
-				<label for="description">Description</label>
-				<textarea class="form-control" id="description" name="description" rows="5"></textarea>
-			</fieldset>
-			<fieldset class="form-group">
-				<label>List the steps you took to solve the problem:</label>
-				<div class="form-inline" id="steps"></div>
-				<span class="text-muted" id="addStep">Add Another Step</span>
-			</fieldset>
-			<fieldset class="form-group">
-				<label>Did you solve the customer's problem?</label>
-				<div class="radio">
-					<label>
-						<input checked name="escalated" type="radio" value="no">
-						Yes
-					</label>
-				</div>
-				<div class="radio">
-					<label>
-						<input name="escalated" type="radio" value="yes">
-						No, so I escalated the issue to
-					</label>
-					<div class="form-inline">
-						<input class="form-control" disabled name="escalatedTo" id="escalatedTo">
+	<body>
+		<nav class="navbar navbar-light bg-faded">
+			<a class="navbar-brand" href="/">Trojan Tech Tickets</a>
+			<ul class="nav navbar-nav pull-right">
+				<li class="nav-item">
+					<a class="nav-link" href="{{.LogoutURL}}">Logout</a>
+				</li>
+			</ul>
+		</nav>
+		<main class="container">
+			<form action="/submit" method="post">
+				<fieldset class="form-group">
+					<label for="customer">Customer</label>
+					<input class="form-control" id="customer" name="customer"/>
+				</fieldset>
+				<fieldset class="form-group">
+					<label for="description">Description</label>
+					<textarea class="form-control" id="description" name="description" rows="5"></textarea>
+				</fieldset>
+				<fieldset class="form-group">
+					<label>List the steps you took to solve the problem:</label>
+					<div class="form-inline" id="steps"></div>
+					<span class="text-muted" id="addStep">Add Another Step</span>
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Did you solve the customer's problem?</label>
+					<div class="radio">
+						<label>
+							<input checked name="escalated" type="radio" value="no">
+							Yes
+						</label>
 					</div>
-				</div>
-			</fieldset>
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</form>
+					<div class="radio">
+						<label>
+							<input name="escalated" type="radio" value="yes">
+							No, so I escalated the issue to
+						</label>
+						<div class="form-inline">
+							<input class="form-control" disabled name="escalatedTo" id="escalatedTo">
+						</div>
+					</div>
+				</fieldset>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</main>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
 		<script>
