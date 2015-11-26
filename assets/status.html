@@ -35,8 +35,8 @@
 						<td>{{.Customer}}</td>
 						<td>{{if .EscalatedTo}}Escalated to {{.EscalatedTo}}{{else}}Resolved{{end}}</td>
 						<td>{{.Description | truncate 80}}</td>
-						<td>{{.Time | timeFormat "2006-01-02"}}</td>
-						<td>{{.Time | timeFormat "3:04 PM"}}</td>
+						<td>{{.Time | timeIn "US/Central" | timeFormat "2006-01-02"}}</td>
+						<td>{{.Time | timeIn "US/Central" | timeFormat "3:04 PM"}}</td>
 					</tr>
 					{{end}}
 				</tbody>

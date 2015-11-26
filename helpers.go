@@ -40,6 +40,11 @@ var TemplateHelpers = template.FuncMap{
 	"timeFormat": func(format string, time time.Time) string {
 		return time.Format(format)
 	},
+	"timeIn": func(tz string, t time.Time) (time.Time, error) {
+		location, err := time.LoadLocation(tz)
+		if err != nil { return time.Time{}, err }
+		return t.In(location), nil
+	},
 	"truncate": func(maxLen int, str string) string {
 		if len(str) < maxLen {
 			return str
