@@ -9,21 +9,7 @@ import (
 	"appengine/user"
 )
 
-func submitHandler(w http.ResponseWriter, r *http.Request) {
-	// Check for user login
-	c := appengine.NewContext(r)
-	u := user.Current(c)
-	if u == nil {
-		url, err := user.LoginURL(c, r.URL.String())
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		w.Header().Set("Location", url)
-		w.WriteHeader(http.StatusFound)
-		return
-	}
-	// Create the data item
+func submit(w http.ResponseWriter, r *http.Request, c appengine.Context, u *user.User) bool {
 	ticket := Ticket{
 		Customer:    r.FormValue("customer"),
 		Description: r.FormValue("description"),
@@ -36,7 +22,7 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	actions := r.Form["stepAction[]"]
 	if len(diagnostics) != len(actions) {
 		http.Error(w, "Invalid steps.", http.StatusBadRequest)
-		return
+		return true
 	}
 	ticket.Steps = make([]Step, len(diagnostics))
 	for i, diagnostic := range diagnostics {
@@ -50,8 +36,8 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	key := datastore.NewIncompleteKey(c, "Ticket", ticketKey(c))
 	_, err := datastore.Put(c, key, &ticket)
 	if checkError(w, err) {
-		return
+		return true
 	}
-	// Redirect
-	http.Redirect(w, r, "/ticket", http.StatusFound)
+	// Return
+	return false
 }

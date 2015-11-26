@@ -11,15 +11,7 @@ import (
 
 var statusTemplate = template.Must(template.New("status.html").Funcs(TemplateHelpers).ParseFiles("assets/status.html"))
 
-func statusHandler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	u := user.Current(c)
-	if u == nil {
-		url, err := user.LoginURL(c, r.URL.String())
-		if checkError(w, err) { return }
-		http.Redirect(w, r, url, http.StatusFound)
-		return
-	}
+func status(w http.ResponseWriter, r *http.Request, c appengine.Context, u *user.User) {
 	// Make the logout URL
 	logoutURL, err := user.LogoutURL(c, r.URL.String())
 	if checkError(w, err) { return }
