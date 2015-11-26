@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Trojan Tech Ticket System</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+	</head>
+	<body class="container">
+		<h1>Hello, {{.User}}</h1>
+		<form action="/submit" method="post">
+			<fieldset class="form-group">
+				<label for="customer">Customer</label>
+				<input class="form-control" id="customer" name="customer"/>
+			</fieldset>
+			<fieldset class="form-group">
+				<label for="description">Description</label>
+				<textarea class="form-control" id="description" name="description" rows="5"></textarea>
+			</fieldset>
+			<fieldset class="form-group">
+				<label>List the steps you took to solve the problem:</label>
+				<div class="form-inline" id="steps"></div>
+				<span class="text-muted" id="addStep">Add Another Step</span>
+			</fieldset>
+			<fieldset class="form-group">
+				<label>Did you solve the customer's problem?</label>
+				<div class="radio">
+					<label>
+						<input checked name="escalated" type="radio" value="no">
+						Yes
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input name="escalated" type="radio" value="yes">
+						No, so I escalated the issue to
+					</label>
+					<div class="form-inline">
+						<input class="form-control" disabled name="escalatedTo" id="escalatedTo">
+					</div>
+				</div>
+			</fieldset>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+		<script>
+var step = function step() {
+	return $("<div>").append(
+		$("<label>").append(
+			"I saw ",
+			$("<input>").addClass("form-control").attr("name", "stepDiagnostic[]"),
+			","
+		),
+		" ", // For spacing between the comma and "so"
+		$("<label>").append(
+			"so I ",
+			$("<input>").addClass("form-control").attr("name", "stepAction[]"),
+			"."
+		)
+	);
+};
+$(function() {
+	$("[name=\"escalated\"]").change(function() {
+		$("#escalatedTo").attr("disabled", this.id === "solved");
+	});
+	$("#addStep").click(function() {
+		$("#steps").append(step());
+	}).click();
+});
+		</script>
+	</body>
+</html>

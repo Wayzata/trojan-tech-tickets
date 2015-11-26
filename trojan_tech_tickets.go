@@ -1,31 +1,18 @@
-package ticket_system
+package trojanTechTickets
 
 import (
 	"fmt"
-	_ "html/template"
 	"net/http"
-
-	"appengine"
-	"appengine/user"
 )
 
 func init() {
-	http.HandleFunc("/", userHandler)
-	// http.HandleFunc("/list", listHandler)
+	http.HandleFunc("/", rootHandler)
+	http.HandleFunc("/ticket", ticketHandler)
+	http.HandleFunc("/status", statusHandler)
+	http.HandleFunc("/submit", submitHandler)
 }
 
-func userHandler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	u := user.Current(c)
-	if u == nil {
-		url, err := user.LoginURL(c, r.URL.String())
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		w.Header().Set("Location", url)
-		w.WriteHeader(http.StatusFound)
-		return
-	}
-	fmt.Fprintf(w, "Hello, %v!", u)
+func statusHandler(w http.ResponseWriter, r *http.Request) {
+	// c := appengine.NewContext(r)
+	fmt.Fprintf(w, "Hello (TODO Show the status of every ticket)")
 }
