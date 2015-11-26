@@ -30,7 +30,7 @@
 				</thead>
 				<tbody>
 					{{range .Tickets}}
-					<tr data-steps="{{.Steps | json}}">
+					<tr data-description="{{.Description}}" data-steps="{{.Steps | json}}">
 						<td>{{.Worker}}</td>
 						<td>{{.Customer}}</td>
 						<td>{{if .EscalatedTo}}Escalated to {{.EscalatedTo}}{{else}}Resolved{{end}}</td>
@@ -107,7 +107,7 @@ $(function() {
 		"worker",
 		"customer",
 		"outcome",
-		"description",
+		undefined,
 		"date",
 		"time"
 	];
@@ -120,6 +120,7 @@ $(function() {
 			if(field === undefined) return;
 			$("#" + field).val(value);
 		});
+		$("#description").val(this.dataset.description);
 		var steps = JSON.parse(this.dataset.steps);
 		if(!steps) {
 			$("#diagnostics,#actions").append(
