@@ -11,7 +11,7 @@ import (
 
 type BaseTemplateData struct {
 	LogoutURL string
-	User string
+	User      string
 }
 
 type Customer struct {
@@ -51,13 +51,15 @@ var TemplateHelpers = template.FuncMap{
 	},
 	"timeIn": func(tz string, t time.Time) (time.Time, error) {
 		location, err := time.LoadLocation(tz)
-		if err != nil { return time.Time{}, err }
+		if err != nil {
+			return time.Time{}, err
+		}
 		return t.In(location), nil
 	},
 	"truncate": func(maxLen int, str string) string {
 		if len(str) < maxLen {
 			return str
 		}
-		return str[:maxLen - 3] + "..."
+		return str[:maxLen-3] + "..."
 	},
 }

@@ -27,7 +27,7 @@ func submit(w http.ResponseWriter, r *http.Request, c appengine.Context, u *user
 		Customer: Customer{
 			Email: r.FormValue("customerEmail"),
 			Grade: grade,
-			Name: r.FormValue("customerName"),
+			Name:  r.FormValue("customerName"),
 		},
 		Description: r.FormValue("description"),
 		EscalatedTo: r.FormValue("escalatedTo"),
