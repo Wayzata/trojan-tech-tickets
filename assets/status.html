@@ -121,13 +121,14 @@ $(function() {
 			$("#" + field).val(value);
 		});
 		$("#description").val(this.dataset.description);
+		$("#diagnostics,#actions").empty();
 		var steps = JSON.parse(this.dataset.steps);
 		for(var i in steps) {
 			var step = steps[i];
-			$("#diagnostics").empty().append(
+			$("#diagnostics").append(
 				$("<input>").addClass("form-control").attr("disabled", true).val(step.Diagnostic)
 			);
-			$("#actions").empty().append(
+			$("#actions").append(
 				$("<input>").addClass("form-control").attr("disabled", true).val(step.Action)
 			);
 		}
