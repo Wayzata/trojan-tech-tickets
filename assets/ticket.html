@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
 		<style>
 main {
-	padding-top: 50px;
+	padding: 25px 0px;
 }
 		</style>
 	</head>
@@ -24,12 +24,69 @@ main {
 		<main class="container">
 			<form method="post">
 				<fieldset class="form-group">
-					<label for="customer">Customer</label>
-					<input class="form-control" id="customer" name="customer"/>
+					<label>Which category would the problem fall under?</label>
+					<div class="radio">
+						<label>
+							<input type="radio" name="category" value="iPad Hardware">
+							iPad Hardware
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="category" value="Google Account">
+							Google Account
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="category" value="Printing">
+							Printing
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="category" value="TurnItIn">
+							TurnItIn
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="category" value="eBackPack">
+							eBackPack
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="category" value="Other">
+							Other:
+							<div class="form-inline">
+								<input class="form-control" disabled id="categoryOther" name="categoryOther"/>
+							</div>
+						</label>
+					</div>
 				</fieldset>
+				<div class="row">
+					<fieldset class="col-md-4 form-group">
+						<label for="customerName">Customer Name</label>
+						<input class="form-control" id="customerName" name="customerName" placeholder="John Smith"/>
+					</fieldset>
+					<fieldset class="col-md-4 form-group">
+						<label for="customerEmail">Customer Email</label>
+						<input class="form-control" id="customerEmail" name="customerEmail" placeholder="smithjoh000@isd284.com"/>
+					</fieldset>
+					<fieldset class="col-md-4 form-group">
+						<label for="customerGrade">Customer Grade</label>
+						<select class="form-control" name="customerGrade" id="customerGrade">
+							<option value="9">9 (Freshman)</option>
+							<option value="10">10 (Sophomore)</option>
+							<option value="11">11 (Junior)</option>
+							<option value="12">12 (Senior)</option>
+						</select>
+					</fieldset>
+				</div>
 				<fieldset class="form-group">
 					<label for="description">Description</label>
-					<textarea class="form-control" id="description" name="description" rows="5"></textarea>
+					<textarea class="form-control" id="description" name="description" placeholder="What was the problem?" rows="5"></textarea>
 				</fieldset>
 				<fieldset class="form-group">
 					<label>List the steps you took to solve the problem:</label>
@@ -83,8 +140,11 @@ var step = function step() {
 	);
 };
 $(function() {
+	$("[name=\"category\"]").change(function() {
+		$("#categoryOther").attr("disabled", this.value !== "Other");
+	});
 	$("[name=\"escalated\"]").change(function() {
-		$("#escalatedTo").attr("disabled", this.id === "solved");
+		$("#escalatedTo").attr("disabled", this.value !== "yes");
 	});
 	$("#addStep").click(function() {
 		$("#steps").append(step());

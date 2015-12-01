@@ -14,13 +14,20 @@ type BaseTemplateData struct {
 	User string
 }
 
+type Customer struct {
+	Email string
+	Grade int
+	Name  string
+}
+
 type Step struct {
 	Action     string
 	Diagnostic string
 }
 
 type Ticket struct {
-	Customer    string
+	Category    string
+	Customer    Customer
 	Description string
 	EscalatedTo string
 	Steps       []Step
