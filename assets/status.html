@@ -120,6 +120,20 @@ $(function() {
 		"date",
 		"time"
 	];
+	$("th").click(function() {
+		var cellIndex = this.cellIndex;
+		console.log("Sorting by", this.textContent);
+		var e = $("tbody>tr");
+		window.e = e; ///DEBUG
+		e.sort(function(a, b) {
+			a = $("td:nth-child(" + (cellIndex+1) + ")", a);
+			b = $("td:nth-child(" + (cellIndex+1) + ")", b);
+			console.log(a, b, a.localeCompare(b));
+			return a.localeCompare(b);
+		});
+		console.log("uhhhh");
+		e.detach().appendTo($("tbody"));
+	});
 	$("tbody>tr").click(function() {
 		var data = $(this).children().map(function(_, e) {
 			return e.textContent;
