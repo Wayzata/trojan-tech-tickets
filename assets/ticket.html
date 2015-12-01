@@ -23,48 +23,77 @@ main {
 		</nav>
 		<main class="container">
 			<form method="post">
-				<fieldset class="form-group">
-					<label>Which category would the problem fall under?</label>
-					<div class="radio">
-						<label>
-							<input type="radio" name="category" value="iPad Hardware">
-							iPad Hardware
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="category" value="Google Account">
-							Google Account
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="category" value="Printing">
-							Printing
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="category" value="TurnItIn">
-							TurnItIn
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="category" value="eBackPack">
-							eBackPack
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="category" value="Other">
-							Other:
-							<div class="form-inline">
-								<input class="form-control" disabled id="categoryOther" name="categoryOther"/>
-							</div>
-						</label>
-					</div>
-				</fieldset>
+				<div class="row">
+					<label class="col-md-12">Which category would the problem fall under?</label>
+					<fieldset class="col-md-6 form-group">
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="Notability">
+								Notability
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="eBackPack">
+								eBackPack
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="iMovie">
+								iMovie
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="Google Apps">
+								Google Apps
+								<span class="text-muted">(Docs, Sheets, Slides, etc.)</span>
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="Canvas">
+								Canvas
+							</label>
+						</div>
+					</fieldset>
+					<fieldset class="col-md-6 form-group">
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="iPad Hardware">
+								iPad Hardware
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="Google Account">
+								Google Account
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="Printing">
+								Printing
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="TurnItIn">
+								TurnItIn
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="category" value="Other">
+								Other:
+								<div class="form-inline">
+									<input class="form-control" disabled id="categoryOther" name="categoryOther"/>
+								</div>
+							</label>
+						</div>
+					</fieldset>
+				</div>
 				<div class="row">
 					<fieldset class="col-md-4 form-group">
 						<label for="customerName">Customer Name</label>
