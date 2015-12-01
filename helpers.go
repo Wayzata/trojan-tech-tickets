@@ -32,6 +32,8 @@ func ticketKey(c appengine.Context) *datastore.Key {
 	return datastore.NewKey(c, "Ticket", "default", 0, nil)
 }
 
+var templates = template.Must(template.New("").Funcs(TemplateHelpers).ParseGlob("assets/*.html"))
+
 var TemplateHelpers = template.FuncMap{
 	"json": func(v interface{}) (string, error) {
 		b, err := json.Marshal(v)

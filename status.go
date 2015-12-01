@@ -1,15 +1,12 @@
 package trojanTechTickets
 
 import (
-	"html/template"
 	"net/http"
 
 	"appengine"
 	"appengine/datastore"
 	"appengine/user"
 )
-
-var statusTemplate = template.Must(template.New("status.html").Funcs(TemplateHelpers).ParseFiles("assets/status.html"))
 
 func status(w http.ResponseWriter, r *http.Request, c appengine.Context, u *user.User) {
 	// Make the logout URL
@@ -21,7 +18,7 @@ func status(w http.ResponseWriter, r *http.Request, c appengine.Context, u *user
 	_, err = query.GetAll(c, &tickets)
 	if checkError(w, err) { return }
 	// Send the page
-	checkError(w, statusTemplate.Execute(w, struct {
+	checkError(w, templates.ExecuteTemplate(w, "status.html", struct {
 		BaseTemplateData
 		Tickets []Ticket
 	}{
