@@ -6,6 +6,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Trojan Tech Ticket System</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+		<style>
+@font-face {
+	font-family: "Glyphicons Halflings";
+	src: url(https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/fonts/glyphicons-halflings-regular.woff2) format("woff2"),
+		url(https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/fonts/glyphicons-halflings-regular.woff) format("woff");
+}
+.sortingBy::after {
+	content: " \e252";
+	font-family: "Glyphicons Halflings";
+	font-size: 8pt;
+}
+		</style>
 	</head>
 	<body>
 		<nav class="navbar navbar-light bg-faded">
@@ -25,7 +37,6 @@
 						<th>Customer</th>
 						<th>Outcome</th>
 						<th>Description</th>
-						<th>Date</th>
 						<th>Time</th>
 					</tr>
 				</thead>
@@ -37,8 +48,7 @@
 						<td><a href="mailto:{{.Customer.Email}}">{{.Customer.Name}}</a></td>
 						<td>{{if .EscalatedTo}}Escalated to {{.EscalatedTo}}{{else}}Resolved{{end}}</td>
 						<td>{{.Description | truncate 80}}</td>
-						<td>{{.Time | timeIn "US/Central" | timeFormat "2006-01-02"}}</td>
-						<td>{{.Time | timeIn "US/Central" | timeFormat "3:04 PM"}}</td>
+						<td>{{.Time | timeIn "US/Central" | timeFormat "2006-01-02 3:04 PM"}}</td>
 					</tr>
 					{{end}}
 				</tbody>
@@ -69,10 +79,7 @@
 							</div>
 							<div class="form-group row">
 								<label for="time" class="col-sm-2 form-control-label">Time</label>
-								<div class="col-sm-5">
-									<input class="form-control" disabled id="date"/>
-								</div>
-								<div class="col-sm-5">
+								<div class="col-sm-10">
 									<input class="form-control" disabled id="time"/>
 								</div>
 							</div>
@@ -117,17 +124,16 @@ $(function() {
 		"customer",
 		"outcome",
 		undefined,
-		"date",
 		"time"
 	];
 	$("th").click(function() {
+		$("th").removeClass("sortingBy");
+		this.classList.add("sortingBy");
 		var cellIndex = this.cellIndex;
-		console.log("Sorting by", this.textContent);
 		var e = $("tbody>tr");
-		window.e = e; ///DEBUG
 		e.sort(function(a, b) {
-			a = $("td:nth-child(" + (cellIndex+1) + ")", a);
-			b = $("td:nth-child(" + (cellIndex+1) + ")", b);
+			a = $("td:nth-child(" + (cellIndex+1) + ")", a).text();
+			b = $("td:nth-child(" + (cellIndex+1) + ")", b).text();
 			console.log(a, b, a.localeCompare(b));
 			return a.localeCompare(b);
 		});
