@@ -1,6 +1,7 @@
 package trojanTechTickets
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -10,7 +11,18 @@ import (
 	"appengine/user"
 )
 
-func submit(w http.ResponseWriter, r *http.Request, c appengine.Context, u *user.User) bool {
+func submitHandler(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	u := user.Current(c)
+	if u == nil {
+		url, err := user.LoginURL(c, r.URL.String())
+		if err != nil {
+			log.Println(err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		http.Redirect(w, r, url, http.StatusFound)
+	}
 	// Get the category.
 	category := r.FormValue("category")
 	if category == "Other" {
@@ -18,8 +30,10 @@ func submit(w http.ResponseWriter, r *http.Request, c appengine.Context, u *user
 	}
 	// Parse grade into an int.
 	grade, err := strconv.Atoi(r.FormValue("customerGrade"))
-	if checkError(w, err) {
-		return true
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	// Build ticket
 	ticket := Ticket{
@@ -39,7 +53,7 @@ func submit(w http.ResponseWriter, r *http.Request, c appengine.Context, u *user
 	actions := r.Form["stepAction[]"]
 	if len(diagnostics) != len(actions) {
 		http.Error(w, "Invalid steps.", http.StatusBadRequest)
-		return true
+		return
 	}
 	ticket.Steps = make([]Step, len(diagnostics))
 	for i, diagnostic := range diagnostics {
@@ -52,9 +66,11 @@ func submit(w http.ResponseWriter, r *http.Request, c appengine.Context, u *user
 	// Put it in the datastore
 	key := datastore.NewIncompleteKey(c, "Ticket", ticketKey(c))
 	_, err = datastore.Put(c, key, &ticket)
-	if checkError(w, err) {
-		return true
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
-	// Return
-	return false
+	// Redirect to the ticket page
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

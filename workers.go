@@ -9,13 +9,12 @@ import (
 	"appengine/user"
 )
 
-func statusHandler(w http.ResponseWriter, r *http.Request) {
+func workersHandler(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
 	if u == nil {
 		url, err := user.LoginURL(c, r.URL.String())
 		if err != nil {
-			log.Println(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -29,25 +28,25 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Get the tickets from the datastore
-	query := datastore.NewQuery("Ticket").Ancestor(ticketKey(c)).Order("-Time")
-	tickets := make([]Ticket, 0, 100)
-	_, err = query.GetAll(c, &tickets)
+	query := datastore.NewQuery("Worker").Ancestor(workerKey(c)).Order("Name")
+	workers := make([]Worker, 0, 100)
+	_, err = query.GetAll(c, &workers)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	// Send the page
-	err = templates.ExecuteTemplate(w, "status.html", struct {
+	err = templates.ExecuteTemplate(w, "workers.html", struct {
 		BaseTemplateData
-		Tickets []Ticket
+		Workers []Worker
 	}{
 		BaseTemplateData: BaseTemplateData{
 			LogoutURL:   logoutURL,
 			User:        u.String(),
 			UserIsAdmin: u.Admin,
 		},
-		Tickets: tickets,
+		Workers: workers,
 	})
 	if err != nil {
 		log.Println(err)

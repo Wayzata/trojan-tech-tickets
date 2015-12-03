@@ -10,8 +10,9 @@ import (
 )
 
 type BaseTemplateData struct {
-	LogoutURL string
-	User      string
+	LogoutURL   string
+	User        string
+	UserIsAdmin bool
 }
 
 type Customer struct {
@@ -35,8 +36,17 @@ type Ticket struct {
 	Worker      string
 }
 
+type Worker struct {
+	Block int
+	Email string
+	Name  string
+}
+
 func ticketKey(c appengine.Context) *datastore.Key {
 	return datastore.NewKey(c, "Ticket", "default", 0, nil)
+}
+func workerKey(c appengine.Context) *datastore.Key {
+	return datastore.NewKey(c, "Worker", "default", 0, nil)
 }
 
 var templates = template.Must(template.New("").Funcs(TemplateHelpers).ParseGlob("assets/*.html"))

@@ -20,12 +20,15 @@
 		</style>
 	</head>
 	<body>
-		<nav class="navbar navbar-light bg-faded">
+		<nav class="navbar navbar-dark bg-primary">
 			<a class="navbar-brand" href="/">Trojan Tech Tickets</a>
 			<ul class="nav navbar-nav pull-right">
-				<li class="nav-item">
-					<a class="nav-link" href="{{.LogoutURL}}">Logout</a>
-				</li>
+				{{if .UserIsAdmin}}
+				<li class="nav-item"><a class="nav-link" href="/">Submit a Ticket</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/status">Ticket List</a></li>
+				<li class="nav-item"><a class="nav-link" href="/workers">Workers List</a></li>
+				{{end}}
+				<li class="nav-item"><a class="nav-link" href="{{.LogoutURL}}">Logout</a></li>
 			</ul>
 		</nav>
 		<main class="container-fluid">
