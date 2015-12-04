@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"appengine"
@@ -46,7 +47,7 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 		Description: r.FormValue("description"),
 		EscalatedTo: r.FormValue("escalatedTo"),
 		Time:        time.Now(),
-		Worker:      u.String(),
+		Worker:      strings.ToLower(u.String()),
 	}
 	// Put in the steps
 	diagnostics := r.Form["stepDiagnostic[]"]

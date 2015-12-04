@@ -20,6 +20,9 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		http.Redirect(w, r, url, http.StatusFound)
+	} else if !u.Admin {
+		http.Error(w, "403 Forbidden", http.StatusForbidden)
+		return
 	}
 	// Make the logout URL
 	logoutURL, err := user.LogoutURL(c, r.URL.String())

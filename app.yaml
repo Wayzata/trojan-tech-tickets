@@ -7,6 +7,9 @@ handlers:
 - url: /.*
   login: required
   script: _go_app
+- url: /status
+  login: admin
+  script: _go_app
 - url: /workers
   login: admin
   script: _go_app

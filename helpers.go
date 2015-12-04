@@ -36,12 +36,6 @@ type Ticket struct {
 	Worker      string
 }
 
-type Worker struct {
-	Block int
-	Email string
-	Name  string
-}
-
 func ticketKey(c appengine.Context) *datastore.Key {
 	return datastore.NewKey(c, "Ticket", "default", 0, nil)
 }
