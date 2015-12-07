@@ -81,19 +81,19 @@
 								<div class="col-sm-5">
 									<select class="form-control" name="block">
 										<option value="" disabled selected>Select a block...</option>
-										<option value="1">Block 1</option>
-										<option value="2">Block 2</option>
-										<option value="3">Block 3</option>
-										<option value="4">Block 4</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
 									</select>
 								</div>
 								<div class="col-sm-5">
 									<select class="form-control" name="term">
 										<option value="" disabled selected>Select a term...</option>
-										<option value="1">Term 1</option>
-										<option value="2">Term 2</option>
-										<option value="3">Term 3</option>
-										<option value="4">Term 4</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
 									</select>
 								</div>
 							</div>
@@ -127,17 +127,37 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
 		<script>
 $(function() {
+	var error = function(text) {
+		$("body").append(
+			$("<div>").addClass("alert alert-danger fade in").append(
+				$("<a>").attr({
+					"href": "#",
+					"class": "close",
+					"data-dismiss": "alert"
+				}).html("&times;"),
+				$("<strong>").text("Error:"),
+				text
+			)
+		);
+	};
 	$("#addWorkerButton").click(function() {
 		$("#addWorkerModal").modal();
 	});
 	$(".deleteButton").click(function() {
-		$("#deleteModal").modal();
+		$("#deleteModal").data({
+			"worker": this.parentElement.parentElement.children[1].textContent
+		}).modal();
 	});
 	$("#deleteSubmit").click(function() {
 		var xhr = new XMLHttpRequest();
-		xhr.open("DELETE", location.pathname);
-		// TODO Finish with the sending and all.
-		location.reload();
+		xhr.open("DELETE", location.pathname + "/" + $("#deleteModal").data("worker"));
+		xhr.onreadystatechange = function() {
+			if(this.readyState === 4) {
+				if(this.status === 200) location.reload();
+				else error("Could not delete worker.");
+			}
+		};
+		xhr.send();
 	});
 	$(".reportButton").click(function() {
 		alert("TODO");
