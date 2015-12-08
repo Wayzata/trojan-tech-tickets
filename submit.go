@@ -40,7 +40,7 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	ticket := Ticket{
 		Category: category,
 		Customer: Customer{
-			Email: r.FormValue("customerEmail"),
+			Email: strings.ToLower(r.FormValue("customerEmail")),
 			Grade: grade,
 			Name:  r.FormValue("customerName"),
 		},

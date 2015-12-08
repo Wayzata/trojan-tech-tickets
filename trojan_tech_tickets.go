@@ -9,6 +9,7 @@ func init() {
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/status", statusHandler)
 	http.HandleFunc("/workers", workersHandler)
+	http.HandleFunc("/workers/", deleteWorkerHandler)
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {

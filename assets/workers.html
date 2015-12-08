@@ -6,6 +6,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Trojan Tech Ticket System</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+		<style>
+.alert {
+	left: 5%;
+	opacity: 0.9;
+	position: fixed;
+	right: 5%;
+	top: 10px;
+	z-index: 1;
+}
+		</style>
 	</head>
 	<body>
 		<nav class="navbar navbar-dark bg-primary">
@@ -128,6 +138,7 @@
 		<script>
 $(function() {
 	var error = function(text) {
+		$(".modal").modal("hide");
 		$("body").append(
 			$("<div>").addClass("alert alert-danger fade in").append(
 				$("<a>").attr({
@@ -150,7 +161,8 @@ $(function() {
 	});
 	$("#deleteSubmit").click(function() {
 		var xhr = new XMLHttpRequest();
-		xhr.open("DELETE", location.pathname + "/" + $("#deleteModal").data("worker"));
+		xhr.open("DELETE", location.pathname + "/" +
+			encodeURIComponent($("#deleteModal").data("worker")));
 		xhr.onreadystatechange = function() {
 			if(this.readyState === 4) {
 				if(this.status === 200) location.reload();
