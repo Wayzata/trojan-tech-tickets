@@ -28,6 +28,9 @@ type Step struct {
 
 type Ticket struct {
 	Category    string
+	ClassName string
+	ClassType string
+	ClassTeacher string
 	Customer    Customer
 	Description string
 	EscalatedTo string

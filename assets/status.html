@@ -45,7 +45,11 @@
 				</thead>
 				<tbody>
 					{{range .Tickets}}
-					<tr data-description="{{.Description}}" data-steps="{{.Steps | json}}">
+					<tr data-description="{{.Description}}"
+							data-steps="{{.Steps | json}}"
+							data-class-name="{{.ClassName}}"
+							data-class-type="{{.ClassType}}"
+							data-teacher="{{.ClassTeacher}}">
 						<td>{{.Category}}</td>
 						<td>{{.Worker}}</td>
 						<td><a href="mailto:{{.Customer.Email}}">{{.Customer.Name}}</a></td>
@@ -93,6 +97,15 @@
 								</div>
 							</div>
 							<div class="form-group row">
+								<label class="col-sm-2 form-control-label">Skipping</label>
+								<div class="col-sm-5">
+									<input class="form-control" disabled id="teacher"/>
+								</div>
+								<div class="col-sm-5">
+									<input class="form-control" disabled id="className"/>
+								</div>
+							</div>
+							<div class="form-group row">
 								<label for="description" class="col-sm-2 form-control-label">Description</label>
 								<div class="col-sm-10">
 									<textarea class="form-control" disabled id="description" rows="5"></textarea>
@@ -137,10 +150,8 @@ $(function() {
 		e.sort(function(a, b) {
 			a = $("td:nth-child(" + (cellIndex+1) + ")", a).text();
 			b = $("td:nth-child(" + (cellIndex+1) + ")", b).text();
-			console.log(a, b, a.localeCompare(b));
 			return a.localeCompare(b);
 		});
-		console.log("uhhhh");
 		e.detach().appendTo($("tbody"));
 	});
 	$("tbody>tr").click(function() {
@@ -164,6 +175,9 @@ $(function() {
 				$("<input>").addClass("form-control").attr("disabled", true).val(step.Action)
 			);
 		}
+		$("#teacher").val(this.dataset.teacher);
+		$("#className").val(this.dataset.className);
+		console.log(this.dataset);
 		$("#modal").modal();
 	});
 });

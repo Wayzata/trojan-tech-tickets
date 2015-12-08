@@ -39,6 +39,9 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	// Build ticket
 	ticket := Ticket{
 		Category: category,
+		ClassName: r.FormValue("className"),
+		ClassType: r.FormValue("classType"),
+		ClassTeacher: r.FormValue("classTeacher"),
 		Customer: Customer{
 			Email: strings.ToLower(r.FormValue("customerEmail")),
 			Grade: grade,
