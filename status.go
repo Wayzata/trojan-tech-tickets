@@ -33,7 +33,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Get the tickets from the datastore
 	tickets := make([]Ticket, 0, 100)
-	_, err = datastore.NewQuery("Ticket").
+	keys, err := datastore.NewQuery("Ticket").
 		Ancestor(ticketKey(c)).
 		Order("-Time").
 		GetAll(c, &tickets)
@@ -41,6 +41,10 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+	ticketNumbers := make([]int64, len(keys))
+	for i, key := range keys {
+		ticketNumbers[i] = key.IntID()
 	}
 	// Get the workers from the datastore
 	workers := make([]Worker, 0, 10)
@@ -56,6 +60,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 	err = templates.ExecuteTemplate(w, "status.html", struct {
 		BaseTemplateData
 		Tickets []Ticket
+		TicketNumbers []int64
 		Workers []Worker
 	}{
 		BaseTemplateData: BaseTemplateData{
@@ -64,6 +69,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 			UserIsAdmin: u.Admin,
 		},
 		Tickets: tickets,
+		TicketNumbers: ticketNumbers,
 		Workers: workers,
 	})
 	if err != nil {
