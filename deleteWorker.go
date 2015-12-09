@@ -38,6 +38,7 @@ func deleteWorkerHandler(w http.ResponseWriter, r *http.Request) {
 	keys, err := datastore.NewQuery("Worker").
 		Ancestor(workerKey(c)).
 		Filter("Email =", email).
+		Limit(1).
 		KeysOnly().
 		GetAll(c, nil)
 	if err != nil {

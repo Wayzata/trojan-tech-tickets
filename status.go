@@ -32,9 +32,21 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Get the tickets from the datastore
-	query := datastore.NewQuery("Ticket").Ancestor(ticketKey(c)).Order("-Time")
 	tickets := make([]Ticket, 0, 100)
-	_, err = query.GetAll(c, &tickets)
+	_, err = datastore.NewQuery("Ticket").
+		Ancestor(ticketKey(c)).
+		Order("-Time").
+		GetAll(c, &tickets)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// Get the workers from the datastore
+	workers := make([]Worker, 0, 10)
+	_, err = datastore.NewQuery("Worker").
+		Ancestor(workerKey(c)).
+		GetAll(c, &workers)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -44,6 +56,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 	err = templates.ExecuteTemplate(w, "status.html", struct {
 		BaseTemplateData
 		Tickets []Ticket
+		Workers []Worker
 	}{
 		BaseTemplateData: BaseTemplateData{
 			LogoutURL:   logoutURL,
@@ -51,6 +64,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 			UserIsAdmin: u.Admin,
 		},
 		Tickets: tickets,
+		Workers: workers,
 	})
 	if err != nil {
 		log.Println(err)

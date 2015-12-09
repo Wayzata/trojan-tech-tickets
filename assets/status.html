@@ -51,7 +51,7 @@
 							data-class-type="{{.ClassType}}"
 							data-teacher="{{.ClassTeacher}}">
 						<td>{{.Category}}</td>
-						<td>{{.Worker}}</td>
+						<td>{{$.Workers | json | workerName .Worker}}</td>
 						<td><a href="mailto:{{.Customer.Email}}">{{.Customer.Name}}</a></td>
 						<td>{{if .EscalatedTo}}Escalated to {{.EscalatedTo}}{{else}}Resolved{{end}}</td>
 						<td>{{.Description | truncate 80}}</td>
