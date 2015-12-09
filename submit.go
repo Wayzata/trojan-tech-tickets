@@ -68,7 +68,13 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// Put it in the datastore
-	key := datastore.NewIncompleteKey(c, "Ticket", ticketKey(c))
+	id, _, err := datastore.AllocateIDs(c, "Ticket", ticketKey(c), 1)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	key := datastore.NewKey(c, "Ticket", "", id, ticketKey(c))
 	_, err = datastore.Put(c, key, &ticket)
 	if err != nil {
 		log.Println(err)
