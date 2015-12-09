@@ -69,13 +69,18 @@ var TemplateHelpers = template.FuncMap{
 		}
 		return str[:maxLen-3] + "..."
 	},
-	"workerName": func(email, workersJSON string) (string, error) {
+	"workerName": func(email, workersJSON string) string {
 		// TODO A less completely *stupid* way of passing around the workers
 		// list than putting it to JSON and back.
 		workers := make([]Worker, 0, 10)
 		if err := json.Unmarshal([]byte(workersJSON), &workers); err != nil {
-			return "", err
+			return email
 		}
-		return workers[0].Name, nil
+		for _, worker := range workers {
+			if worker.Email == email {
+				return worker.Name
+			}
+		}
+		return email, nil
 	},
 }
