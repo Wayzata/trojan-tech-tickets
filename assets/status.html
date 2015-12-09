@@ -113,8 +113,7 @@
 							</div>
 							<div class="form-group row">
 								<label for="steps" class="col-sm-2 form-control-label">Steps Taken</label>
-								<div class="col-sm-5" id="diagnostics"></div>
-								<div class="col-sm-5" id="actions"></div>
+								<div class="col-sm-10" id="steps"></div>
 							</div>
 							<div class="form-group row">
 								<label for="outcome" class="col-sm-2 form-control-label">Outcome</label>
@@ -164,20 +163,14 @@ $(function() {
 			$("#" + field).val(value);
 		});
 		$("#description").val(this.dataset.description);
-		$("#diagnostics,#actions").empty();
-		var steps = JSON.parse(this.dataset.steps);
-		for(var i in steps) {
-			var step = steps[i];
-			$("#diagnostics").append(
-				$("<input>").addClass("form-control").attr("disabled", true).val(step.Diagnostic)
-			);
-			$("#actions").append(
-				$("<input>").addClass("form-control").attr("disabled", true).val(step.Action)
-			);
-		}
+		$("#steps").empty().append(JSON.parse(this.dataset.steps).map(function(step) {
+			return $("<input>")
+				.addClass("form-control")
+				.attr("disabled", true)
+				.val("Saw " + step.Diagnostic + ", so " + step.Action + ".");
+		}));
 		$("#teacher").val(this.dataset.teacher);
 		$("#className").val(this.dataset.className);
-		console.log(this.dataset);
 		$("#modal").modal();
 	});
 });
