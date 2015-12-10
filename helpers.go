@@ -81,6 +81,6 @@ var TemplateHelpers = template.FuncMap{
 				return worker.Name
 			}
 		}
-		return email, nil
+		return email
 	},
 }
