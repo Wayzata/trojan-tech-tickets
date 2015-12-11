@@ -9,7 +9,7 @@ import (
 	"appengine/user"
 )
 
-func statusHandler(w http.ResponseWriter, r *http.Request) {
+func listTickets(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
 	if u == nil {
@@ -53,12 +53,13 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Send the page
-	err = templates.ExecuteTemplate(w, "status.html", struct {
+	err = templates.ExecuteTemplate(w, "listTickets.html", struct {
 		BaseTemplateData
 		Tickets []Ticket
 		Workers []Worker
 	}{
 		BaseTemplateData: BaseTemplateData{
+			CurrentURL:  r.URL.Path,
 			LogoutURL:   logoutURL,
 			User:        u.String(),
 			UserIsAdmin: u.Admin,

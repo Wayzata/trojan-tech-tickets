@@ -18,17 +18,7 @@
 		</style>
 	</head>
 	<body>
-		<nav class="navbar navbar-dark bg-primary">
-			<a class="navbar-brand" href="/">Trojan Tech Tickets</a>
-			<ul class="nav navbar-nav pull-right">
-				{{if .UserIsAdmin}}
-				<li class="nav-item"><a class="nav-link" href="/">Submit a Ticket</a></li>
-				<li class="nav-item"><a class="nav-link" href="/status">Ticket List</a></li>
-				<li class="nav-item"><a class="nav-link active" href="/workers">Workers List</a></li>
-				{{end}}
-				<li class="nav-item"><a class="nav-link" href="{{.LogoutURL}}">Logout</a></li>
-			</ul>
-		</nav>
+		{{template "navbar" $}}
 		<main class="container-fluid">
 			<table class="table">
 				<thead>
@@ -38,7 +28,6 @@
 						<th>Class</th>
 						<th>Tickets Assigned</th>
 						<th>Resolution Rate</th>
-						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -47,12 +36,8 @@
 						<td>{{.Email}}</td>
 						<td>{{.Name}}</td>
 						<td>Term {{.Term}}, Block {{.Block}}</td>
-						<td>{{.TicketCount}}</td>
-						<td>{{.ResolveRate}}</td>
-						<td>
-							<button class="btn btn-primary reportButton">Report Card</button>
-							<button class="btn btn-danger deleteButton">Delete</button>
-						</td>
+						<td>TODO {{.TicketCount}}</td>
+						<td>TODO {{.ResolveRate}}</td>
 					</tr>
 					{{end}}
 				</tbody>
@@ -153,26 +138,6 @@ $(function() {
 	};
 	$("#addWorkerButton").click(function() {
 		$("#addWorkerModal").modal();
-	});
-	$(".deleteButton").click(function() {
-		$("#deleteModal").data({
-			"worker": this.parentElement.parentElement.children[1].textContent
-		}).modal();
-	});
-	$("#deleteSubmit").click(function() {
-		var xhr = new XMLHttpRequest();
-		xhr.open("DELETE", location.pathname + "/" +
-			encodeURIComponent($("#deleteModal").data("worker")));
-		xhr.onreadystatechange = function() {
-			if(this.readyState === 4) {
-				if(this.status === 200) location.reload();
-				else error("Could not delete worker.");
-			}
-		};
-		xhr.send();
-	});
-	$(".reportButton").click(function() {
-		alert("TODO");
 	});
 });
 		</script>

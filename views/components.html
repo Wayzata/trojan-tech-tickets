@@ -1,0 +1,11 @@
+{{define "navbar"}}<nav class="navbar navbar-dark bg-primary">
+	<a class="navbar-brand" href="/">Trojan Tech Tickets</a>
+	<ul class="nav navbar-nav pull-right">
+		<li class="nav-item"><a class="nav-link {{if eq .CurrentURL "/new"}}active{{end}}" href="/new">Submit a Ticket</a></li>
+		<li class="nav-item"><a class="nav-link {{if eq .CurrentURL "/tickets"}}active{{end}}" href="/tickets">Ticket List</a></li>
+		{{if .UserIsAdmin}}
+		<li class="nav-item"><a class="nav-link {{if eq .CurrentURL "/workers"}}active{{end}}" href="/workers">Workers List</a></li>
+		{{end}}
+		<li class="nav-item"><a class="nav-link" href="{{.LogoutURL}}">Logout</a></li>
+	</ul>
+</nav>{{end}}
