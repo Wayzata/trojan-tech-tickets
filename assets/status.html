@@ -45,19 +45,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					{{range $i, $t := .Tickets}}
-					<tr data-description="{{$t.Description}}"
-							data-steps="{{$t.Steps | json}}"
-							data-class-name="{{$t.ClassName}}"
-							data-class-type="{{$t.ClassType}}"
-							data-teacher="{{$t.ClassTeacher}}">
-						<td>{{index $.TicketNumbers $i}}</td>
-						<td>{{$t.Category}}</td>
-						<td>{{$.Workers | json | workerName $t.Worker}}</td>
-						<td><a href="mailto:{{$t.Customer.Email}}">{{$t.Customer.Name}}</a></td>
-						<td>{{if $t.EscalatedTo}}Escalated to {{$t.EscalatedTo}}{{else}}Resolved{{end}}</td>
-						<td>{{$t.Description | truncate 80}}</td>
-						<td>{{$t.Time | timeIn "US/Central" | timeFormat "2006-01-02 3:04 PM"}}</td>
+					{{range .Tickets}}
+					<tr data-description="{{.Description}}"
+							data-steps="{{.Steps | json}}"
+							data-class-name="{{.ClassName}}"
+							data-class-type="{{.ClassType}}"
+							data-teacher="{{.ClassTeacher}}">
+						<td>{{index .Number}}</td>
+						<td>{{.Category}}</td>
+						<td>{{$.Workers | json | workerName .Worker}}</td>
+						<td><a href="mailto:{{.Customer.Email}}">{{.Customer.Name}}</a></td>
+						<td>{{if .EscalatedTo}}Escalated to {{.EscalatedTo}}{{else}}Resolved{{end}}</td>
+						<td>{{.Description | truncate 80}}</td>
+						<td>{{.Time | timeIn "US/Central" | timeFormat "2006-01-02 3:04 PM"}}</td>
 					</tr>
 					{{end}}
 				</tbody>

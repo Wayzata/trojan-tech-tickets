@@ -38,9 +38,9 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Build ticket
 	ticket := Ticket{
-		Category: category,
-		ClassName: r.FormValue("className"),
-		ClassType: r.FormValue("classType"),
+		Category:     category,
+		ClassName:    r.FormValue("className"),
+		ClassType:    r.FormValue("classType"),
 		ClassTeacher: r.FormValue("classTeacher"),
 		Customer: Customer{
 			Email: strings.ToLower(r.FormValue("customerEmail")),
@@ -67,14 +67,22 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 			Diagnostic: diagnostic,
 		}
 	}
-	// Put it in the datastore
-	id, _, err := datastore.AllocateIDs(c, "Ticket", ticketKey(c), 1)
-	if err != nil {
-		log.Println(err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	// Get the last ticket number
+	highestTicket := make([]Ticket, 0, 1)
+	_, err = datastore.NewQuery("Ticket").
+		Ancestor(ticketKey(c)).
+		Order("-Number").
+		Limit(1).
+		GetAll(c, &highestTicket)
+	if len(highestTicket) == 0 {
+		log.Println("1st ticket")
+		highestTicket = append(highestTicket, Ticket{})
+	} else {
+		log.Println(highestTicket)
 	}
-	key := datastore.NewKey(c, "Ticket", "", id, ticketKey(c))
+	ticket.Number = highestTicket[0].Number + 1
+	// Put it in the datastore
+	key := datastore.NewIncompleteKey(c, "Ticket", ticketKey(c))
 	_, err = datastore.Put(c, key, &ticket)
 	if err != nil {
 		log.Println(err)

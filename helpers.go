@@ -27,16 +27,17 @@ type Step struct {
 }
 
 type Ticket struct {
-	Category    string
-	ClassName string
-	ClassType string
+	Category     string
+	ClassName    string
+	ClassType    string
 	ClassTeacher string
-	Customer    Customer
-	Description string
-	EscalatedTo string
-	Steps       []Step
-	Time        time.Time
-	Worker      string
+	Customer     Customer
+	Description  string
+	EscalatedTo  string
+	Number       int
+	Steps        []Step
+	Time         time.Time
+	Worker       string
 }
 
 func ticketKey(c appengine.Context) *datastore.Key {
