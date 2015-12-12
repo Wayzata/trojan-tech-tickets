@@ -36,14 +36,10 @@
 				</thead>
 				<tbody>
 					{{range .Tickets}}
-					<tr data-description="{{.Description}}"
-							data-steps="{{.Steps | json}}"
-							data-class-name="{{.ClassName}}"
-							data-class-type="{{.ClassType}}"
-							data-teacher="{{.ClassTeacher}}">
-						<td>{{index .Number}}</td>
+					<tr>
+						<td>{{.Number}}</td>
 						<td>{{.Category}}</td>
-						<td>{{$.Workers | json | workerName .Worker}}</td>
+						<td><!-- evil hack lives here -->{{$.Workers | json | workerName .Worker}}</td>
 						<td><a href="mailto:{{.Customer.Email}}">{{.Customer.Name}}</a></td>
 						<td>{{if .EscalatedTo}}Escalated to {{.EscalatedTo}}{{else}}Resolved{{end}}</td>
 						<td>{{.Description | truncate 80}}</td>
@@ -53,86 +49,10 @@
 				</tbody>
 			</table>
 		</main>
-		<div class="modal fade" id="modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">
-							&times;
-						</button>
-						<h4 class="modal-title">Ticket</h4>
-					</div>
-					<div class="modal-body">
-						<form>
-							<div class="form-group row">
-								<label for="category" class="col-sm-2 form-control-label">Category</label>
-								<div class="col-sm-10">
-									<input class="form-control" disabled id="category"/>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="worker" class="col-sm-2 form-control-label">Worker</label>
-								<div class="col-sm-10">
-									<input class="form-control" disabled id="worker"/>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="time" class="col-sm-2 form-control-label">Time</label>
-								<div class="col-sm-10">
-									<input class="form-control" disabled id="time"/>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="customer" class="col-sm-2 form-control-label">Customer</label>
-								<div class="col-sm-10">
-									<input class="form-control" disabled id="customer"/>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-sm-2 form-control-label">Skipping</label>
-								<div class="col-sm-5">
-									<input class="form-control" disabled id="teacher"/>
-								</div>
-								<div class="col-sm-5">
-									<input class="form-control" disabled id="className"/>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="description" class="col-sm-2 form-control-label">Description</label>
-								<div class="col-sm-10">
-									<textarea class="form-control" disabled id="description" rows="5"></textarea>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="steps" class="col-sm-2 form-control-label">Steps Taken</label>
-								<div class="col-sm-10" id="steps"></div>
-							</div>
-							<div class="form-group row">
-								<label for="outcome" class="col-sm-2 form-control-label">Outcome</label>
-								<div class="col-sm-10">
-									<input class="form-control" disabled id="outcome"/>
-								</div>
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
 		<script>
 $(function() {
-	var modalFields = [
-		"category",
-		"worker",
-		"customer",
-		"outcome",
-		undefined,
-		"time"
-	];
 	$("th").click(function() {
 		$("th").removeClass("sortingBy");
 		this.classList.add("sortingBy");
@@ -146,24 +66,7 @@ $(function() {
 		e.detach().appendTo($("tbody"));
 	});
 	$("tbody>tr").click(function() {
-		var data = $(this).children().map(function(_, e) {
-			return e.textContent;
-		}).toArray();
-		data.forEach(function(value, i) {
-			var field = modalFields[i];
-			if(field === undefined) return;
-			$("#" + field).val(value);
-		});
-		$("#description").val(this.dataset.description);
-		$("#steps").empty().append(JSON.parse(this.dataset.steps).map(function(step) {
-			return $("<input>")
-				.addClass("form-control")
-				.attr("disabled", true)
-				.val("Saw " + step.Diagnostic + ", so " + step.Action + ".");
-		}));
-		$("#teacher").val(this.dataset.teacher);
-		$("#className").val(this.dataset.className);
-		$("#modal").modal();
+		location.assign("tickets/" + this.children[0].textContent);
 	});
 });
 		</script>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Trojan Tech Ticket System</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+		<style>
+@media print {
+	#main { /* Because CSS precedence is weird */
+		max-width: none;
+	}
+}
+@media screen {
+	main {
+		padding: 25px 0px;
+	}
+}
+		</style>
+	</head>
+	<body>
+		{{template "navbar" $}}
+		<main class="container" id="main">{{with .Ticket}}
+			<h1>Ticket #{{.Number}}</h1>
+			<div>
+				By {{.Worker}} at {{with $t := .Time | timeIn "US/Central"}}
+					{{$t | timeFormat "3:04 PM"}} on {{$t | timeFormat "January 2, 2006"}}
+				{{end}}
+			</div>
+			<div class="text-muted">Category: {{.Category}}</div>
+			<ul>
+				<li>ClassName {{.ClassName}}</li>
+				<li>ClassType {{.ClassType}}</li>
+				<li>ClassTeacher {{.ClassTeacher}}</li>
+				<li>Customer {{.Customer}}</li>
+				<li>Description {{.Description}}</li>
+				<li>EscalatedTo {{.EscalatedTo}}</li>
+			</ul>
+			<ol>{{range .Steps}}
+				<li>I saw {{.Diagnostic}}, so {{.Action}}.</li>
+			{{end}}</ol>
+		{{end}}</main>
+	</body>
+</html>
