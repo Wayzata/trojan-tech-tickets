@@ -29,14 +29,13 @@
 				{{end}}
 			</div>
 			<div class="text-muted">Category: {{.Category}}</div>
-			<ul>
-				<li>ClassName {{.ClassName}}</li>
-				<li>ClassType {{.ClassType}}</li>
-				<li>ClassTeacher {{.ClassTeacher}}</li>
-				<li>Customer {{.Customer}}</li>
-				<li>Description {{.Description}}</li>
-				<li>EscalatedTo {{.EscalatedTo}}</li>
-			</ul>
+			<div>Student: <a href="mailto:{{.Customer.Email}}">{{.Customer.Name}}</a></div>
+			<div>Student Grade: {{.Customer.Grade | gradeString}}</div>
+			<div>Class Skipped: {{.ClassTeacher}} {{.ClassName}} ({{.ClassType}})</div>
+			<div>Status: {{if .EscalatedTo}}Escalated to {{.EscalatedTo}}{{else}}Resolved{{end}}</div>
+			<hr>
+			<p>{{.Description}}</p>
+			<hr>
 			<ol>{{range .Steps}}
 				<li>I saw {{.Diagnostic}}, so {{.Action}}.</li>
 			{{end}}</ol>

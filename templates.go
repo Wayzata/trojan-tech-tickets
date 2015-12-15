@@ -3,12 +3,27 @@ package trojanTechTickets
 import (
 	"encoding/json"
 	"html/template"
+	"strconv"
 	"time"
 )
 
 var templates = template.Must(template.New("").Funcs(TemplateHelpers).ParseGlob("views/*.html"))
 
 var TemplateHelpers = template.FuncMap{
+	"gradeString": func(grade int) string {
+		switch grade {
+		case 9:
+			return "Freshman"
+		case 10:
+			return "Sophomore"
+		case 11:
+			return "Junior"
+		case 12:
+			return "Senior"
+		default:
+			return strconv.Itoa(grade)
+		}
+	},
 	"json": func(v interface{}) (string, error) {
 		b, err := json.Marshal(v)
 		return string(b), err
