@@ -1,0 +1,8 @@
+.alert {
+	left: 5%;
+	opacity: 0.9;
+	position: fixed;
+	right: 5%;
+	top: 10px;
+	z-index: 1;
+}

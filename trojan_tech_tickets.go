@@ -8,6 +8,6 @@ func init() {
 	http.HandleFunc("/tickets", listTickets)
 	http.HandleFunc("/tickets/", showTicket)
 	http.HandleFunc("/workers", listWorkers)
-	// http.HandleFunc("/workers/", showWorker)
+	http.HandleFunc("/workers/", showWorker)
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 }

@@ -7,20 +7,12 @@
 		<title>Trojan Tech Ticket System</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
 		<style>
-.alert {
-	left: 5%;
-	opacity: 0.9;
-	position: fixed;
-	right: 5%;
-	top: 10px;
-	z-index: 1;
-}
 		</style>
 	</head>
 	<body>
 		{{template "navbar" $}}
 		<main class="container-fluid">
-			<table class="table">
+			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th>Email</th>
@@ -101,43 +93,15 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">
-							&times;
-						</button>
-						<h4 class="modal-title">Delete Worker</h4>
-					</div>
-					<div class="modal-body">
-						Are you sure you want to delete this worker?
-					</div>
-					<div class="modal-footer">
-						<button class="btn btn-danger" id="deleteSubmit">Delete</button>
-						<button class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
 		<script>
 $(function() {
-	var error = function(text) {
-		$(".modal").modal("hide");
-		$("body").append(
-			$("<div>").addClass("alert alert-danger fade in").append(
-				$("<a>").attr({
-					"href": "#",
-					"class": "close",
-					"data-dismiss": "alert"
-				}).html("&times;"),
-				$("<strong>").text("Error:"),
-				text
-			)
-		);
-	};
 	$("#addWorkerButton").click(function() {
 		$("#addWorkerModal").modal();
+	});
+	$("tbody>tr").click(function() {
+		location.assign("workers/" + this.children[0].textContent);
 	});
 });
 		</script>
