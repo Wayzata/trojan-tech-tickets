@@ -8,7 +8,8 @@ import (
 )
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
+	path := r.URL.Path
+	if path != "/" {
 		http.Error(w, "404 Not Found", http.StatusNotFound)
 	} else {
 		c := appengine.NewContext(r)

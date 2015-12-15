@@ -1,0 +1,16 @@
+@media print {
+	#main { /* Because CSS precedence is weird */
+		max-width: none;
+	}
+	.noprint {
+		display: none;
+	}
+}
+@media screen {
+	main {
+		padding: 25px 0px;
+	}
+	.noscreen {
+		display: none;
+	}
+}

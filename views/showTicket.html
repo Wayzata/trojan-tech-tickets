@@ -6,18 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Trojan Tech Ticket System</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
-		<style>
-@media print {
-	#main { /* Because CSS precedence is weird */
-		max-width: none;
-	}
-}
-@media screen {
-	main {
-		padding: 25px 0px;
-	}
-}
-		</style>
+		<link rel="stylesheet" href="/assets/printable.css">
 	</head>
 	<body>
 		{{template "navbar" $}}
@@ -29,7 +18,10 @@
 				{{end}}
 			</div>
 			<div class="text-muted">Category: {{.Category}}</div>
-			<div>Student: <a href="mailto:{{.Customer.Email}}">{{.Customer.Name}}</a></div>
+			<div>
+				Student: <a href="mailto:{{.Customer.Email}}">{{.Customer.Name}}</a>
+				<span class="noscreen">({{.Customer.Email}})</span>
+			</div>
 			<div>Student Grade: {{.Customer.Grade | gradeString}}</div>
 			<div>Class Skipped: {{.ClassTeacher}} {{.ClassName}} ({{.ClassType}})</div>
 			<div>Status: {{if .EscalatedTo}}Escalated to {{.EscalatedTo}}{{else}}Resolved{{end}}</div>
