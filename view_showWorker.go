@@ -55,9 +55,18 @@ func showWorker(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		// Get the number of tickets and resolve rate.
+		resolveRate, ticketCount, err := (&worker[0]).Stats(&c)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		// Send the page
 		err = templates.ExecuteTemplate(w, "showWorker.html", struct {
 			BaseTemplateData
+			ResolveRate int
+			TicketCount int
 			Worker *Worker
 		}{
 			BaseTemplateData: BaseTemplateData{
@@ -66,6 +75,8 @@ func showWorker(w http.ResponseWriter, r *http.Request) {
 				User:        u.String(),
 				UserIsAdmin: u.Admin,
 			},
+			ResolveRate: resolveRate,
+			TicketCount: ticketCount,
 			Worker: &worker[0],
 		})
 		if err != nil {

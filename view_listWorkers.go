@@ -74,9 +74,21 @@ func listWorkers(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		// Get worker stats
+		workerStats := make(map[string][]int)
+		for _, worker := range workers {
+			rr, tc, err := (&worker).Stats(&c)
+			if err != nil {
+				log.Println(err)
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			workerStats[worker.Email] = []int{rr, tc}
+		}
 		// Send the page
 		err = templates.ExecuteTemplate(w, "listWorkers.html", struct {
 			BaseTemplateData
+			Stats map[string][]int
 			Workers []Worker
 		}{
 			BaseTemplateData: BaseTemplateData{
@@ -85,6 +97,7 @@ func listWorkers(w http.ResponseWriter, r *http.Request) {
 				User:        u.String(),
 				UserIsAdmin: u.Admin,
 			},
+			Stats: workerStats,
 			Workers: workers,
 		})
 		if err != nil {

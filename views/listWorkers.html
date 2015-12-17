@@ -28,8 +28,8 @@
 						<td>{{.Email}}</td>
 						<td>{{.Name}}</td>
 						<td>Term {{.Term}}, Block {{.Block}}</td>
-						<td>TODO {{.TicketCount}}</td>
-						<td>TODO {{.ResolveRate}}</td>
+						<td>{{index $.Stats .Email 1}}</td>
+						<td>{{index $.Stats .Email 0}}%</td>
 					</tr>
 					{{end}}
 				</tbody>
