@@ -1,0 +1,10 @@
+@font-face {
+	font-family: "Glyphicons Halflings";
+	src: url(https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/fonts/glyphicons-halflings-regular.woff2) format("woff2"),
+	url(https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/fonts/glyphicons-halflings-regular.woff) format("woff");
+}
+.sortingBy::after {
+	content: " \e252";
+	font-family: "Glyphicons Halflings";
+	font-size: 8pt;
+}

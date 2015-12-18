@@ -6,18 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Trojan Tech Ticket System</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
-		<style>
-@font-face {
-	font-family: "Glyphicons Halflings";
-	src: url(https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/fonts/glyphicons-halflings-regular.woff2) format("woff2"),
-		url(https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/fonts/glyphicons-halflings-regular.woff) format("woff");
-}
-.sortingBy::after {
-	content: " \e252";
-	font-family: "Glyphicons Halflings";
-	font-size: 8pt;
-}
-		</style>
+		<link rel="stylesheet" href="/assets/sort_table.css">
 	</head>
 	<body>
 		{{template "navbar" $}}
@@ -51,20 +40,9 @@
 		</main>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+		<script src="/assets/sort_table.js"></script>
 		<script>
 $(function() {
-	$("th").click(function() {
-		$("th").removeClass("sortingBy");
-		this.classList.add("sortingBy");
-		var cellIndex = this.cellIndex;
-		var e = $("tbody>tr");
-		e.sort(function(a, b) {
-			a = $("td:nth-child(" + (cellIndex+1) + ")", a).text();
-			b = $("td:nth-child(" + (cellIndex+1) + ")", b).text();
-			return a.localeCompare(b);
-		});
-		e.detach().appendTo($("tbody"));
-	});
 	$("tbody>tr").click(function() {
 		location.assign("tickets/" + this.children[0].textContent);
 	});
