@@ -20,9 +20,6 @@ func listTickets(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		http.Redirect(w, r, url, http.StatusFound)
-	} else if !u.Admin {
-		http.Error(w, "403 Forbidden", http.StatusForbidden)
-		return
 	}
 	// Make the logout URL
 	logoutURL, err := user.LogoutURL(c, r.URL.String())
@@ -33,10 +30,13 @@ func listTickets(w http.ResponseWriter, r *http.Request) {
 	}
 	// Get the tickets from the datastore
 	tickets := make([]Ticket, 0, 100)
-	_, err = datastore.NewQuery("Ticket").
+	query := datastore.NewQuery("Ticket").
 		Ancestor(ticketKey(c)).
-		Order("-Time").
-		GetAll(c, &tickets)
+		Order("-Time")
+	if !u.Admin {
+		query = query.Filter("Worker = ", u.Email)
+	}
+	_, err = query.GetAll(c, &tickets)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
