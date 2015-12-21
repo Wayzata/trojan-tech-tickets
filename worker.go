@@ -12,15 +12,14 @@ type Worker struct {
 	Term  int
 }
 
-func (w *Worker) Stats(c *appengine.Context) (int, int, error) {
+func (w *Worker) Stats(c *appengine.Context) (resolveRate, n int, err error) {
+	n = 0
 	x := 0
-	n := 0
 	iter := datastore.NewQuery("Ticket").
 		Ancestor(ticketKey(*c)).
 		Filter("Worker =", w.Email).
 		Order("-Time").
 		Run(*c)
-	var err error
 	var ticket Ticket
 	for {
 		_, err = iter.Next(&ticket)
@@ -35,5 +34,8 @@ func (w *Worker) Stats(c *appengine.Context) (int, int, error) {
 	if err == datastore.Done {
 		err = nil
 	}
-	return int(float64(x * 100) / float64(n)), n, err
+	if n != 0 {
+		resolveRate = int(float64(x * 100) / float64(n))
+	}
+	return
 }
